@@ -1,6 +1,4 @@
 ﻿using Platform.Core.Result;
-using System;
-using System.Collections.Generic;
 
 namespace Platform.Infrastructure.FileSystem
 {

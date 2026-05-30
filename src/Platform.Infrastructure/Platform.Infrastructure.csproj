@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Platform.Core\Platform.Core.csproj" />
+    <ProjectReference Include="..\Platform.Core\Platform.Core.csproj" />
   </ItemGroup>
 
 </Project>

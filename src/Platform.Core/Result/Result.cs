@@ -1,4 +1,4 @@
-namespace Platform.Core.Results;
+namespace Platform.Core.Result;
 
 public readonly record struct Result<T>
 {

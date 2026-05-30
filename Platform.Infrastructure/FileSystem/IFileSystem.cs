@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Platform.Core.Result;
 
 namespace Platform.Infrastructure.FileSystem
 {
-    internal class IFileSystem
+    public interface IFileSystem
     {
+        public Result<string> Read(string file);
+        public Result<string> Write(string file, string data);
     }
 }
+ 

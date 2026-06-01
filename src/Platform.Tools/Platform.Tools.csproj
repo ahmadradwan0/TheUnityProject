@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Platform.Core\Platform.Core.csproj" />
+    <ProjectReference Include="..\Platform.Infrastructure\Platform.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FileSync\" />
+  </ItemGroup>
+
 </Project>

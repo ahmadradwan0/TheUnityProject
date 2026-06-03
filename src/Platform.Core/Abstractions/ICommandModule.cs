@@ -3,5 +3,5 @@ namespace Platform.Core.Abstractions;
 
 public interface ICommandModule
 {
-    Command Build();
+    public Command Build();
 }

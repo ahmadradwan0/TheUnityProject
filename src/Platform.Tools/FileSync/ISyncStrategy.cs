@@ -8,5 +8,6 @@ namespace Platform.Tools.FileSync
     public interface ISyncStrategy
     {
         public Result<bool> Sync(string src, string dest);
+        SyncType Type { get; }
     }
 }

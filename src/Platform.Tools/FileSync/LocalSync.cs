@@ -7,6 +7,8 @@ namespace Platform.Tools.FileSync
 {
     public class LocalSync(IFileSystem fileSystem) : ISyncStrategy
     {
+        public SyncType Type => SyncType.Local;
+
         public Result<bool> Sync(string src, string dest)
         {
 			try

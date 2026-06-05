@@ -1,5 +1,6 @@
 ﻿using Platform.Core.Abstractions;
 using Platform.Core.Builders;
+using Platform.Core.Result;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
@@ -22,22 +23,33 @@ namespace Platform.Tools.FileSync
 
         private Command BuildLocalCommand()
         {
-            List<Argument> arguments = [
-                new Argument<string>("source"),
-                new Argument<string>("destination")
-            ];
 
-            List<Option> options = [
-                new Option<bool>("--verify"),
-                new Option<bool>("--overwrite")
-            ];
+            Argument<string> srcArg = new("source");
+            Argument<string> destArg = new("destination");
 
-            return CommandBuilder.Create(
+            List<Argument> arguments = [srcArg, destArg];
+
+            Option<bool> verifyOption = new("--verify");
+            Option<bool> overwriteOption = new("--overwrite");
+
+            List<Option> options = [verifyOption, overwriteOption];
+
+            Command command = CommandBuilder.Create(
                 "sync",
                 "sync files between locations",
-                arguments,
-                options
+                arguments: arguments,
+                options: options
             );
+
+            command.SetAction((parseResult) =>
+            {
+                string src = parseResult.GetValue(srcArg) ?? string.Empty;
+                string dest = parseResult.GetValue(destArg) ?? string.Empty;
+
+                Result<bool> result = fileSyncService.Sync(SyncType.Local, src, dest);
+            });
+
+            return 
         }
     }
 }

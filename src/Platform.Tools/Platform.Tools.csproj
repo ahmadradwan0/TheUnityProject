@@ -11,8 +11,4 @@
     <ProjectReference Include="..\Platform.Infrastructure\Platform.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="FileSync\" />
-  </ItemGroup>
-
 </Project>

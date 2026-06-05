@@ -7,7 +7,7 @@ namespace Platform.Tools.FileSync
 {
     public interface ISyncStrategy
     {
-        public Result<bool> Sync(string src, string dest);
+        public Result<bool> Sync(SyncSettings settings);
         SyncType Type { get; }
     }
 }

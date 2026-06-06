@@ -27,7 +27,7 @@ namespace Platform.Infrastructure.FileSystem
                 using StreamWriter sw = new(file);
                 sw.Write(data);
 
-                return Result<string>.Success("Done");
+                return Result<string>.Success(file);
             }
             catch (Exception e)
             {

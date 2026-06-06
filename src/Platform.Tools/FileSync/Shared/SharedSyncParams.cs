@@ -21,7 +21,7 @@ public class SshSyncParams : SharedSyncParams
 {
     public Option<string> Host { get; } = new("--host");
     public Option<string> Username { get; } = new("--username");
-    public Option<string> Password { get; } = new("--Password");
+    public Option<string> Password { get; } = new("--password");
 
     public override List<Option> Options => [.. base.Options, Host, Username];
 }

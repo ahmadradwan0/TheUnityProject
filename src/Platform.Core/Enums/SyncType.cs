@@ -1,4 +1,6 @@
-﻿public enum SyncType
+﻿namespace Platform.Core.Enums;
+
+public enum SyncType
 {
     Local,
     SSH,

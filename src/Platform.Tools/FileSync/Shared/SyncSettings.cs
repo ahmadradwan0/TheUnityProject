@@ -1,4 +1,8 @@
 ﻿
+using Platform.Core.Enums;
+namespace Platform.Tools.FileSync.Shared;
+
+
 public class SyncSettings
 {
     public required string Source { get; init; }

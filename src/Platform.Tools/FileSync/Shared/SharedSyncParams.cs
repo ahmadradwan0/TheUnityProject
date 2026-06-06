@@ -1,4 +1,5 @@
 ﻿using System.CommandLine;
+namespace Platform.Tools.FileSync.Shared;
 
 public class SharedSyncParams
 {

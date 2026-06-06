@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Platform.Core.Enums;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Platform.Infrastructure.Hashing
 {

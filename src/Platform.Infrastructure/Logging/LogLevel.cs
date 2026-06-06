@@ -1,4 +1,6 @@
-﻿public enum LogLevel
+﻿namespace Platform.Infrastructure.Logging;
+
+public enum LogLevel
 {
     Debug = 0,
     Information = 1,

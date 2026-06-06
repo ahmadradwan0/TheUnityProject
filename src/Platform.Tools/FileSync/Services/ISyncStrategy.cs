@@ -1,4 +1,6 @@
-﻿using Platform.Core.Result;
+﻿using Platform.Core.Enums;
+using Platform.Core.Result;
+using Platform.Tools.FileSync.Shared;
 
 namespace Platform.Tools.FileSync.Services
 {

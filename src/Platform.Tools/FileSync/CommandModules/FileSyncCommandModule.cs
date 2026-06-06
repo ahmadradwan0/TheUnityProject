@@ -1,9 +1,10 @@
 ﻿using Platform.Core.Abstractions;
 using Platform.Core.Builders;
-using Platform.Core.Logger;
+using Platform.Core.Enums;
 using Platform.Core.Result;
 using Platform.Infrastructure.Logging;
 using Platform.Tools.FileSync.Services;
+using Platform.Tools.FileSync.Shared;
 using System.CommandLine;
 
 namespace Platform.Tools.FileSync.CommandModules

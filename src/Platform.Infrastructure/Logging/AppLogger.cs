@@ -1,6 +1,4 @@
-﻿using Platform.Core.Logger;
-
-namespace Platform.Infrastructure.Logging;
+﻿namespace Platform.Infrastructure.Logging;
 
 public class AppLogger : IAppLogger
 {

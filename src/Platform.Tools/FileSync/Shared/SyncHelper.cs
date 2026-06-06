@@ -2,6 +2,7 @@
 using Platform.Infrastructure.FileSystem;
 using Platform.Infrastructure.Hashing;
 using System.Text;
+namespace Platform.Tools.FileSync.Shared;
 
 public static class SyncHelper
 {

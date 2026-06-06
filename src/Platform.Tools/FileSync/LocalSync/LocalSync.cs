@@ -1,7 +1,9 @@
-﻿using Platform.Core.Result;
+﻿using Platform.Core.Enums;
+using Platform.Core.Result;
 using Platform.Infrastructure.FileSystem;
 using Platform.Infrastructure.Hashing;
 using Platform.Tools.FileSync.Services;
+using Platform.Tools.FileSync.Shared;
 using System.Text;
 
 namespace Platform.Tools.FileSync.LocalSync

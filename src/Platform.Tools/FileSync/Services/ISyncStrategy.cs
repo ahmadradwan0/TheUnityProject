@@ -1,9 +1,6 @@
 ﻿using Platform.Core.Result;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Platform.Tools.FileSync
+namespace Platform.Tools.FileSync.Services
 {
     public interface ISyncStrategy
     {

@@ -1,6 +1,6 @@
 ﻿using Platform.Core.Result;
 
-namespace Platform.Tools.FileSync
+namespace Platform.Tools.FileSync.Services
 {
     public class FileSyncService(IEnumerable<ISyncStrategy> syncStrategies)
     {

@@ -1,6 +1,7 @@
 ﻿using Platform.Core.Result;
 using Platform.Infrastructure.FileSystem;
 using Platform.Infrastructure.Hashing;
+using Platform.Tools.FileSync.Services;
 using System.Text;
 
 namespace Platform.Tools.FileSync.LocalSync
@@ -9,31 +10,31 @@ namespace Platform.Tools.FileSync.LocalSync
     {
         public SyncType Type => SyncType.Local;
 
-        public Result<bool> Sync(string src, string dest)
+        public Result<bool> Sync(SyncSettings settings)
         {
 			try
 			{
-                PathType srcType = fileSystem.Exists(src);
-                PathType destType = fileSystem.Exists(dest);
+                PathType srcType = fileSystem.Exists(settings.Source);
+                PathType destType = fileSystem.Exists(settings.Destination);
 
                 if (srcType == PathType.NotFound)
                 {
-                    return Result<bool>.Failure($"Source not found or not a file: {src}");
+                    return Result<bool>.Failure($"Source not found or not a file: {settings.Source}");
                 }
 
-                if (Path.GetFullPath(src) == Path.GetFullPath(dest))
+                if (Path.GetFullPath(settings.Source) == Path.GetFullPath(settings.Destination))
                 {
                     return Result<bool>.Failure("Source and destination are the same");
                 }
 
                 if (srcType == PathType.File)
                 {
-                    return SyncFile(src, dest, destType);
+                    return SyncFile(settings.Source, settings.Destination, destType, settings);
                 }
 
                 if (srcType == PathType.Directory)
                 {
-                    return SyncDirectory(src, dest, destType);
+                    return SyncDirectory(settings.Source, settings.Destination, destType, settings);
                 }
             }
 			catch (Exception e)
@@ -44,7 +45,7 @@ namespace Platform.Tools.FileSync.LocalSync
             return Result<bool>.Failure("Unexpected path type");
         }
 
-        private Result<bool> SyncFile(string src, string dest, PathType destType)
+        private Result<bool> SyncFile(string src, string dest, PathType destType, SyncSettings settings)
         {
             Result<string> srcContent;
             Result<string> destContent;
@@ -79,7 +80,7 @@ namespace Platform.Tools.FileSync.LocalSync
                 else
                 {
                     // copy source to dest cause we know both are same type and not the same 
-                    Result<bool> copyResult = CopyAndVerify(src, dest);
+                    Result<bool> copyResult = SyncHelper.CopyAndVerify(src, dest, fileSystem, settings);
                     if (!copyResult.IsSuccess)
                     {
                         return copyResult;
@@ -95,7 +96,7 @@ namespace Platform.Tools.FileSync.LocalSync
                 string fileName = Path.GetFileName(src);
                 string destPath = Path.Combine(dest, fileName);
 
-                Result<bool> copyResult = CopyAndVerify(src, destPath);
+                Result<bool> copyResult = SyncHelper.CopyAndVerify(src, destPath, fileSystem, settings);
                 if (!copyResult.IsSuccess)
                 {
                     return copyResult;
@@ -106,7 +107,7 @@ namespace Platform.Tools.FileSync.LocalSync
 
             if (destType == PathType.NotFound)
             {
-                Result<bool> copyResult = CopyAndVerify(src, dest);
+                Result<bool> copyResult = SyncHelper.CopyAndVerify(src, dest, fileSystem, settings);
                 if (!copyResult.IsSuccess)
                 {
                     return copyResult;
@@ -118,7 +119,7 @@ namespace Platform.Tools.FileSync.LocalSync
             return Result<bool>.Failure("Unexpected path type");
         }
 
-        private Result<bool> SyncDirectory(string src, string dest, PathType destType)
+        private Result<bool> SyncDirectory(string src, string dest, PathType destType, SyncSettings settings)
         {
             if (destType == PathType.Directory)
             {
@@ -127,7 +128,7 @@ namespace Platform.Tools.FileSync.LocalSync
                 {
                     string fileName = Path.GetFileName(file);
                     string destPath = Path.Combine(dest, fileName);
-                    Result<bool> result = SyncFile(file, destPath, fileSystem.Exists(destPath));
+                    Result<bool> result = SyncFile(file, destPath, fileSystem.Exists(destPath), settings);
                     if (!result.IsSuccess)
                     {
                         return result;
@@ -139,7 +140,7 @@ namespace Platform.Tools.FileSync.LocalSync
                 {
                     string dirName = Path.GetFileName(dir);
                     string destDir = Path.Combine(dest, dirName);
-                    Result<bool> result = SyncDirectory(dir, destDir, fileSystem.Exists(destDir));
+                    Result<bool> result = SyncDirectory(dir, destDir, fileSystem.Exists(destDir), settings);
                     if (!result.IsSuccess)
                     {
                         return result;
@@ -156,7 +157,7 @@ namespace Platform.Tools.FileSync.LocalSync
                 {
                     string fileName = Path.GetFileName(file);
                     string destPath = Path.Combine(dest, fileName);
-                    Result<bool> result = SyncFile(file, destPath, fileSystem.Exists(destPath));
+                    Result<bool> result = SyncFile(file, destPath, fileSystem.Exists(destPath), settings);
                     if (!result.IsSuccess)
                     {
                         return result;
@@ -168,7 +169,7 @@ namespace Platform.Tools.FileSync.LocalSync
                 {
                     string dirName = Path.GetFileName(dir);
                     string destDir = Path.Combine(dest, dirName);
-                    Result<bool> result = SyncDirectory(dir, destDir, fileSystem.Exists(destDir));
+                    Result<bool> result = SyncDirectory(dir, destDir, fileSystem.Exists(destDir), settings);
                     if (!result.IsSuccess)
                     {
                         return result;
@@ -186,39 +187,5 @@ namespace Platform.Tools.FileSync.LocalSync
             return Result<bool>.Failure("Unexpected path type");
         }
 
-        private Result<bool> CopyAndVerify(string src, string dest, bool overwrite = true)
-        {
-            try
-            {
-                File.Copy(src, dest, overwrite);
-
-                Result<string> srcContent = fileSystem.Read(src);
-                Result<string> destContent = fileSystem.Read(dest);
-
-                if (!srcContent.IsSuccess)
-                {
-                    return Result<bool>.Failure($"Cannot read source after copy: {srcContent.Error}");
-                }
-
-                if (!destContent.IsSuccess)
-                {
-                    return Result<bool>.Failure($"Cannot read destination after copy: {destContent.Error}");
-                }
-
-                string srcHash = HashService.ComputeHash(Encoding.UTF8.GetBytes(srcContent.Value!));
-                string destHash = HashService.ComputeHash(Encoding.UTF8.GetBytes(destContent.Value!));
-
-                if (srcHash != destHash)
-                {
-                    return Result<bool>.Failure($"Verification failed: {dest}");
-                }
-
-                return Result<bool>.Success(true);
-            }
-            catch (Exception e)
-            {
-                return Result<bool>.Failure(e.Message);
-            }
-        }
     }
 }

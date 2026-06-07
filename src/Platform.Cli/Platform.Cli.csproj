@@ -2,12 +2,17 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+	<AssemblyName>unity</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Platform.Core\Platform.Core.csproj" />
     <ProjectReference Include="..\Platform.Infrastructure\Platform.Infrastructure.csproj" />
     <ProjectReference Include="..\Platform.Tools\Platform.Tools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.8" />
   </ItemGroup>
 
 </Project>

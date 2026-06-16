@@ -1,6 +1,4 @@
 ﻿using Platform.Core.Result;
-using System;
-using System.Collections.Generic;
 
 namespace Platform.Infrastructure.FileSystem
 {
@@ -34,6 +32,21 @@ namespace Platform.Infrastructure.FileSystem
             {
                 return Result<string>.Failure(e.Message);
             }
+        }
+
+        public PathType Exists(string file)
+        {
+            if (File.Exists(file))
+            {
+                return PathType.File;
+            }
+
+            if (Directory.Exists(file))
+            {
+                return PathType.Directory;
+            }
+
+            return PathType.NotFound;
         }
     }
 }

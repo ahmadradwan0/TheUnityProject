@@ -6,6 +6,7 @@ namespace Platform.Infrastructure.FileSystem
     {
         public Result<string> Read(string file);
         public Result<string> Write(string file, string data);
+        public PathType Exists(string file);
     }
 }
  

@@ -1,7 +1,9 @@
-namespace Platform.Core.Abstractions;
-
-public interface ITool
+﻿namespace Platform.Core.Abstractions
 {
-    string Name { get; }
-    string Description { get; }
+    public interface ITool
+    {
+        string Name { get; }
+        string Description { get; }
+        IEnumerable<ICommandModule> CommandModules { get; }
+    }
 }

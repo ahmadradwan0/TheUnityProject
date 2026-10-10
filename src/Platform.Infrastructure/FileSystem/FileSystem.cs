@@ -1,6 +1,5 @@
-﻿using Platform.Core.Result;
-using System;
-using System.Collections.Generic;
+﻿using Platform.Core.Enums;
+using Platform.Core.Result;
 
 namespace Platform.Infrastructure.FileSystem
 {
@@ -28,12 +27,27 @@ namespace Platform.Infrastructure.FileSystem
                 using StreamWriter sw = new(file);
                 sw.Write(data);
 
-                return Result<string>.Success("Done");
+                return Result<string>.Success(file);
             }
             catch (Exception e)
             {
                 return Result<string>.Failure(e.Message);
             }
+        }
+
+        public PathType Exists(string file)
+        {
+            if (File.Exists(file))
+            {
+                return PathType.File;
+            }
+
+            if (Directory.Exists(file))
+            {
+                return PathType.Directory;
+            }
+
+            return PathType.NotFound;
         }
     }
 }
